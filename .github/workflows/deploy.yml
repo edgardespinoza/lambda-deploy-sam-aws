@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: awslambda
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -19,7 +20,7 @@ jobs:
 
       - name: setup sam
         uses: aws-actions/setup-sam@v2
-    
+
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
