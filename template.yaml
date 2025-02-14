@@ -1,49 +1,110 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   light-measure
 
   Sample SAM Template for light-measure
-  
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
 
 Resources:
-  HelloWorldFunction:
+  LightMeasurementsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: LightMeasurements
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S # String
+        - AttributeName: year
+          AttributeType: N # Number
+        - AttributeName: month
+          AttributeType: N # Number
+        - AttributeName: local
+          AttributeType: S # String
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: YearMonthLocalIndex
+          KeySchema:
+            - AttributeName: year
+              KeyType: HASH
+            - AttributeName: month
+              KeyType: RANGE
+            - AttributeName: local
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+
+  LightMeasurementFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/
+      CodeUri: src/
       Handler: app.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref LightMeasurementsTable
+          INDEX_NAME: !GetAtt LightMeasurementsTable.GlobalSecondaryIndexes[0].IndexName
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LightMeasurementsTable
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        CreateMeasurement:
+          Type: Api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /measure
+            Method: POST
+        GetMeasurement:
+          Type: Api
+          Properties:
+            Path: /measure/{id}
+            Method: GET
+        UpdateMeasurement:
+          Type: Api
+          Properties:
+            Path: /measure/{id}
+            Method: PUT
+        DeleteMeasurement:
+          Type: Api
+          Properties:
+            Path: /measure/{id}
+            Method: DELETE
+        SearchMeasurements:
+          Type: Api
+          Properties:
+            Path: /measure/search
+            Method: GET
+
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
         Target: "es2020"
         Sourcemap: true
-        EntryPoints: 
-        - app.ts
+        EntryPoints:
+          - app.ts
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
+  LightMeasurementApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/measure/"
+  LightMeasurementFunction:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
+    Value: !GetAtt LightMeasurementFunction.Arn
+  LightMeasurementFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Value: !GetAtt LightMeasurementFunctionIamRole.Arn
+  LightMeasurementTable:
+    Description: "DynamoDB table name"
+    Value: !GetAtt LightMeasurementsTable.Arn
