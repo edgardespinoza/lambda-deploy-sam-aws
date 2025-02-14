@@ -13,15 +13,15 @@ import { controller } from './di/injection';
 
 export const lambdaHandler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> => {
     switch (event.routeKey) {
-        case 'GET /measures/search':
+        case 'GET /measure/search':
             return await controller.getMeasureByLocalYearMonth(event);
-        case 'GET /measures':
+        case 'GET /measure':
             return await controller.getById(event);
-        case 'POST /measures':
+        case 'POST /measure':
             return await controller.create(event);
-        case 'DELETE /measures/{id}':
+        case 'DELETE /measure/{id}':
             return await controller.delete(event);
-        case 'PUT /measures/{id}':
+        case 'PUT /measure/{id}':
             return await controller.update(event);
         default:
             return { statusCode: 400, body: JSON.stringify({ error: `Invalid request ${event.routeKey}` }) };

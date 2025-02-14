@@ -15,7 +15,7 @@ describe('Unit test for app handler', function () {
         ddbMock.reset();
     });
 
-    it('should handle GET /measures and return 200', async () => {
+    it('should handle GET /measure and return 200', async () => {
         // Return the specified value whenever the spied scan function is called
         const id = uuid();
 
@@ -25,8 +25,8 @@ describe('Unit test for app handler', function () {
 
         const event: APIGatewayProxyEventV2 = {
             version: '2.0',
-            routeKey: 'GET /measures/search',
-            rawPath: '/measures/search',
+            routeKey: 'GET /measure/search',
+            rawPath: '/measure/search',
             rawQueryString: '',
             queryStringParameters: { local: 'Home', year: '2023', month: '1' }, // Missing required parameters
             headers: {},
@@ -37,13 +37,13 @@ describe('Unit test for app handler', function () {
                 domainPrefix: 'example',
                 http: {
                     method: 'GET',
-                    path: '/measures/search',
+                    path: '/measure/search',
                     protocol: 'HTTP/1.1',
                     sourceIp: '192.168.1.1',
                     userAgent: 'jest',
                 },
                 requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
-                routeKey: 'GET /measures/search',
+                routeKey: 'GET /measure/search',
                 stage: 'dev',
                 time: '10/Apr/2023:12:34:56 +0000',
                 timeEpoch: 1681137296000,
@@ -59,7 +59,7 @@ describe('Unit test for app handler', function () {
         );
     });
 
-    it('should handle DELETE /measures/{id} and return 200', async () => {
+    it('should handle DELETE /measure/{id} and return 200', async () => {
         const id = uuid();
 
         ddbMock.on(QueryCommand).resolves({
@@ -68,8 +68,8 @@ describe('Unit test for app handler', function () {
 
         const event: APIGatewayProxyEventV2 = {
             version: '2.0',
-            routeKey: 'DELETE /measures/{id}',
-            rawPath: `/measures/${id}`,
+            routeKey: 'DELETE /measure/{id}',
+            rawPath: `/measure/${id}`,
             rawQueryString: '',
             pathParameters: { id: id },
             headers: {},
@@ -80,13 +80,13 @@ describe('Unit test for app handler', function () {
                 domainPrefix: 'example',
                 http: {
                     method: 'DELETE',
-                    path: `/measures/${id}`,
+                    path: `/measure/${id}`,
                     protocol: 'HTTP/1.1',
                     sourceIp: '192.168.1.1',
                     userAgent: 'jest',
                 },
                 requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
-                routeKey: 'DELETE /measures/{id}',
+                routeKey: 'DELETE /measure/{id}',
                 stage: 'dev',
                 time: '10/Apr/2023:12:34:56 +0000',
                 timeEpoch: 1681137296000,
@@ -99,15 +99,15 @@ describe('Unit test for app handler', function () {
         expect(result.body).toEqual(JSON.stringify({ message: `Deleted ${id}` }));
     });
 
-    it('should handle POST /measures and return 201', async () => {
+    it('should handle POST /measure and return 201', async () => {
         const id = uuid();
 
         ddbMock.on(QueryCommand).resolves({});
 
         const event: APIGatewayProxyEventV2 = {
             version: '2.0',
-            routeKey: 'POST /measures',
-            rawPath: '/measures',
+            routeKey: 'POST /measure',
+            rawPath: '/measure',
             rawQueryString: '',
             headers: {},
             body: JSON.stringify({
@@ -125,13 +125,13 @@ describe('Unit test for app handler', function () {
                 domainPrefix: 'example',
                 http: {
                     method: 'POST',
-                    path: '/measures',
+                    path: '/measure',
                     protocol: 'HTTP/1.1',
                     sourceIp: '192.168.1.1',
                     userAgent: 'jest',
                 },
                 requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
-                routeKey: 'POST /measures',
+                routeKey: 'POST /measure',
                 stage: 'dev',
                 time: '10/Apr/2023:12:34:56 +0000',
                 timeEpoch: 1681137296000,
@@ -145,7 +145,7 @@ describe('Unit test for app handler', function () {
         expect(result.body).toEqual(JSON.stringify({ message: 'Created' }));
     });
 
-    it('should handle PUT /measures/{id} and return 200', async () => {
+    it('should handle PUT /measure/{id} and return 200', async () => {
         const id = uuid();
         ddbMock.on(QueryCommand).resolves({
             Items: [{ id: id, local: 'Home', year: 2023, month: 1, room: 'Living Room', meter: 100 }],
@@ -153,8 +153,8 @@ describe('Unit test for app handler', function () {
 
         const event: APIGatewayProxyEventV2 = {
             version: '2.0',
-            routeKey: 'PUT /measures/{id}',
-            rawPath: `/measures/${id}`,
+            routeKey: 'PUT /measure/{id}',
+            rawPath: `/measure/${id}`,
             rawQueryString: '',
             pathParameters: { id: id },
             headers: {},
@@ -166,13 +166,13 @@ describe('Unit test for app handler', function () {
                 domainPrefix: 'example',
                 http: {
                     method: 'PUT',
-                    path: `/measures/${id}`,
+                    path: `/measure/${id}`,
                     protocol: 'HTTP/1.1',
                     sourceIp: '192.168.1.1',
                     userAgent: 'jest',
                 },
                 requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
-                routeKey: 'PUT /measures/{id}',
+                routeKey: 'PUT /measure/{id}',
                 stage: 'dev',
                 time: '10/Apr/2023:12:34:56 +0000',
                 timeEpoch: 1681137296000,
