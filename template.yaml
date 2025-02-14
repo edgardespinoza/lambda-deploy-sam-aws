@@ -36,11 +36,11 @@ Resources:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
-  LightMeasurementFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  CreateMeasurementFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/
-      Handler: app.lambdaHandler
+      CodeUri: src/handlers
+      Handler: createMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -53,40 +53,143 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref LightMeasurementsTable
       Events:
-        CreateMeasurement:
+        Api:
           Type: Api
           Properties:
             Path: /measure
             Method: POST
-        GetMeasurement:
-          Type: Api
-          Properties:
-            Path: /measure/{id}
-            Method: GET
-        UpdateMeasurement:
-          Type: Api
-          Properties:
-            Path: /measure/{id}
-            Method: PUT
-        DeleteMeasurement:
-          Type: Api
-          Properties:
-            Path: /measure/{id}
-            Method: DELETE
-        SearchMeasurements:
-          Type: Api
-          Properties:
-            Path: /measure/search
-            Method: GET
-
-    Metadata: # Manage esbuild properties
+    Metadata:
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - app.ts
+          - createMeasure.ts
+
+  GetMeasurementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/handlers
+      Handler: getMeasure.lambdaHandler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref LightMeasurementsTable
+          INDEX_NAME: YearMonthIndex
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LightMeasurementsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /measure/{id}
+            Method: GET
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - getMeasure.ts
+
+  UpdateMeasurementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/handlers
+      Handler: updateMeasure.lambdaHandler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref LightMeasurementsTable
+          INDEX_NAME: YearMonthIndex
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LightMeasurementsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /measure/{id}
+            Method: PUT
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - updateMeasure.ts
+
+  DeleteMeasurementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/handlers
+      Handler: deleteMeasure.lambdaHandler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref LightMeasurementsTable
+          INDEX_NAME: YearMonthIndex
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LightMeasurementsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /measure/{id}
+            Method: DELETE
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - deleteMeasure.ts
+
+  SearchMeasurementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/handlers
+      Handler: searchMeasure.lambdaHandler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref LightMeasurementsTable
+          INDEX_NAME: YearMonthIndex
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LightMeasurementsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /measure/search
+            Method: GET
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - searchMeasure.ts
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -95,9 +198,3 @@ Outputs:
   LightMeasurementApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/measure/"
-  LightMeasurementFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt LightMeasurementFunction.Arn
-  LightMeasurementTable:
-    Description: "DynamoDB table name"
-    Value: !GetAtt LightMeasurementsTable.Arn

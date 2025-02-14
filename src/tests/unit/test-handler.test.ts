@@ -4,7 +4,10 @@ import { APIGatewayProxyEventV2 } from 'aws-lambda';
 import { mockClient } from 'aws-sdk-client-mock';
 import 'dotenv/config';
 import { v4 as uuid } from 'uuid';
-import { lambdaHandler } from '../../app';
+import { lambdaHandler as createMeasure } from '../../handlers/createMeasure';
+import { lambdaHandler as deleteMeasure } from '../../handlers/deleteMeasure';
+import { lambdaHandler as searchMeasure } from '../../handlers/searchMeasure';
+import { lambdaHandler as updateMeasure } from '../../handlers/updateMeasure';
 import { dynamoClient } from '../../infrastructure/dynamoDBClient';
 
 describe('Unit test for app handler', function () {
@@ -51,7 +54,7 @@ describe('Unit test for app handler', function () {
             isBase64Encoded: false,
         };
 
-        const result = await lambdaHandler(event);
+        const result = await searchMeasure(event);
 
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual(
@@ -94,12 +97,12 @@ describe('Unit test for app handler', function () {
             isBase64Encoded: false,
         };
 
-        const result = await lambdaHandler(event);
+        const result = await deleteMeasure(event);
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual(JSON.stringify({ message: `Deleted ${id}` }));
     });
 
-    it('should handle POST /measure and return 201', async () => {
+    it('should handle create POST /measure and return 201', async () => {
         const id = uuid();
 
         ddbMock.on(QueryCommand).resolves({});
@@ -139,7 +142,7 @@ describe('Unit test for app handler', function () {
             isBase64Encoded: false,
         };
 
-        const result = await lambdaHandler(event);
+        const result = await createMeasure(event);
 
         expect(result.statusCode).toEqual(201);
         expect(result.body).toEqual(JSON.stringify({ message: 'Created' }));
@@ -180,7 +183,7 @@ describe('Unit test for app handler', function () {
             isBase64Encoded: false,
         };
 
-        const result = await lambdaHandler(event);
+        const result = await updateMeasure(event);
 
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual(JSON.stringify({ message: 'Updated' }));
