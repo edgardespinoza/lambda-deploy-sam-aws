@@ -39,8 +39,8 @@ Resources:
   CreateMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/handlers
-      Handler: createMeasure.lambdaHandler
+      CodeUri: src
+      Handler: handlers/createMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -65,13 +65,13 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - createMeasure.ts
+          - handlers/createMeasure.ts
 
   GetMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/handlers
-      Handler: getMeasure.lambdaHandler
+      CodeUri: src
+      Handler: handlers/getMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -96,13 +96,13 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - getMeasure.ts
+          - handlers/getMeasure.ts
 
   UpdateMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/handlers
-      Handler: updateMeasure.lambdaHandler
+      CodeUri: src
+      Handler: handlers/updateMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -127,13 +127,13 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - updateMeasure.ts
+          - handlers/updateMeasure.ts
 
   DeleteMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/handlers
-      Handler: deleteMeasure.lambdaHandler
+      CodeUri: src
+      Handler: handlers/deleteMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -158,13 +158,13 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - deleteMeasure.ts
+          - handlers/deleteMeasure.ts
 
   SearchMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/handlers
-      Handler: searchMeasure.lambdaHandler
+      CodeUri: src
+      Handler: handlers/searchMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -189,7 +189,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - searchMeasure.ts
+          - handlers/searchMeasure.ts
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
