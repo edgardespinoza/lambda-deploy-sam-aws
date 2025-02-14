@@ -10,11 +10,11 @@ import { LightMeasurement } from '../models/lightMeasurement';
 import { LightMeasurementRepository } from '../models/repository';
 
 const tableName = process.env.TABLE_NAME;
-const yearMonthLocalIndex = process.env.INDEX_NAME;
+const yearMonthIndex = process.env.INDEX_NAME;
 
 export class DynamoRepository implements LightMeasurementRepository {
     constructor(private db: DynamoDBDocumentClient) {
-        console.log(`table name and index: ${tableName} : ${yearMonthLocalIndex}`);
+        console.log(`table name and index: ${tableName} : ${yearMonthIndex}`);
 
         if (!tableName) {
             throw new Error('TableName environment variable is not defined');
@@ -48,8 +48,9 @@ export class DynamoRepository implements LightMeasurementRepository {
         const result = await this.db.send(
             new QueryCommand({
                 TableName: tableName,
-                IndexName: yearMonthLocalIndex,
-                KeyConditionExpression: '#year = :year AND #month = :month AND #local = :local',
+                IndexName: yearMonthIndex,
+                KeyConditionExpression: '#year = :year AND #month = :month',
+                FilterExpression: '#local = :local',
                 ExpressionAttributeNames: {
                     '#year': 'year',
                     '#month': 'month',

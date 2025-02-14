@@ -17,24 +17,20 @@ Resources:
       TableName: LightMeasurements
       AttributeDefinitions:
         - AttributeName: id
-          AttributeType: S # String
+          AttributeType: S
         - AttributeName: year
-          AttributeType: N # Number
+          AttributeType: N
         - AttributeName: month
-          AttributeType: N # Number
-        - AttributeName: local
-          AttributeType: S # String
+          AttributeType: N
       KeySchema:
         - AttributeName: id
           KeyType: HASH
       GlobalSecondaryIndexes:
-        - IndexName: YearMonthLocalIndex
+        - IndexName: YearMonthIndex
           KeySchema:
             - AttributeName: year
               KeyType: HASH
             - AttributeName: month
-              KeyType: RANGE
-            - AttributeName: local
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
@@ -51,7 +47,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref LightMeasurementsTable
-          INDEX_NAME: !GetAtt LightMeasurementsTable.GlobalSecondaryIndexes[0].IndexName
+          INDEX_NAME: YearMonthIndex
 
       Policies:
         - DynamoDBCrudPolicy:
@@ -102,9 +98,6 @@ Outputs:
   LightMeasurementFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt LightMeasurementFunction.Arn
-  LightMeasurementFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt LightMeasurementFunctionIamRole.Arn
   LightMeasurementTable:
     Description: "DynamoDB table name"
     Value: !GetAtt LightMeasurementsTable.Arn
