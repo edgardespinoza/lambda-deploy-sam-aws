@@ -39,7 +39,7 @@ Resources:
   CreateMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src
+      CodeUri: src/
       Handler: handlers/createMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
@@ -70,7 +70,7 @@ Resources:
   GetMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src
+      CodeUri: src/
       Handler: handlers/getMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
@@ -101,7 +101,7 @@ Resources:
   UpdateMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src
+      CodeUri: src/
       Handler: handlers/updateMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
@@ -132,7 +132,7 @@ Resources:
   DeleteMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src
+      CodeUri: src/
       Handler: handlers/deleteMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
@@ -163,7 +163,7 @@ Resources:
   SearchMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src
+      CodeUri: src/
       Handler: handlers/searchMeasure.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
