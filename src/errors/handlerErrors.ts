@@ -12,6 +12,7 @@ export const errorHandler = (error: unknown): Result => {
     }
 
     if (error instanceof Error) {
+        console.error(error);
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     }
 
