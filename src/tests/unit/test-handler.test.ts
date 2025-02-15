@@ -184,7 +184,7 @@ describe('Unit test for app handler', function () {
         };
 
         const result = await updateMeasure(event);
-
+        console.log(result);
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual(JSON.stringify({ message: 'Updated' }));
     });
