@@ -6,6 +6,7 @@ import {
     QueryCommand,
     UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { AppError } from '../errors/appError';
 import { LightMeasurement } from '../models/lightMeasurement';
 import { LightMeasurementRepository } from '../models/repository';
 
@@ -14,16 +15,41 @@ const yearMonthIndex = process.env.INDEX_NAME;
 
 export class DynamoRepository implements LightMeasurementRepository {
     constructor(private db: DynamoDBDocumentClient) {
-        console.log(`table name and index: ${tableName} : ${yearMonthIndex}`);
-
         if (!tableName) {
             throw new Error('TableName environment variable is not defined');
         }
     }
-    async update(measurement: LightMeasurement): Promise<void> {
+    async update(data: LightMeasurement): Promise<void> {
+        const result = await this.db.send(
+            new QueryCommand({
+                TableName: tableName,
+                IndexName: yearMonthIndex,
+                KeyConditionExpression: '#year = :year AND #month = :month',
+                FilterExpression: '#local = :local AND #room = :room AND id <> :id',
+                ExpressionAttributeNames: {
+                    '#year': 'year',
+                    '#month': 'month',
+                    '#local': 'local',
+                    '#room': 'room',
+                    '#id': 'id',
+                },
+                ExpressionAttributeValues: {
+                    ':year': data.year,
+                    ':month': data.month,
+                    ':local': data.local,
+                    ':room': data.room,
+                    ':id': data.id,
+                },
+            }),
+        );
+
+        if (result.Items && result.Items.length > 0) {
+            throw new AppError(400, 'A measurement with the same year, month, local, and room already exists.');
+        }
+
         const command = new UpdateCommand({
             TableName: tableName,
-            Key: { id: measurement.id },
+            Key: { id: data.id },
             UpdateExpression: 'SET #month = :month, #year = :year, #room = :room, #meter = :meter, #local = :local',
             ExpressionAttributeNames: {
                 '#month': 'month',
@@ -33,11 +59,11 @@ export class DynamoRepository implements LightMeasurementRepository {
                 '#local': 'local',
             },
             ExpressionAttributeValues: {
-                ':month': measurement.month,
-                ':year': measurement.year,
-                ':room': measurement.room,
-                ':meter': measurement.meter,
-                ':local': measurement.local,
+                ':month': data.month,
+                ':year': data.year,
+                ':room': data.room,
+                ':meter': data.meter,
+                ':local': data.local,
             },
             ReturnValues: 'UPDATED_NEW',
         });
@@ -73,6 +99,31 @@ export class DynamoRepository implements LightMeasurementRepository {
     }
 
     async create(data: LightMeasurement): Promise<void> {
+        const result = await this.db.send(
+            new QueryCommand({
+                TableName: tableName,
+                IndexName: yearMonthIndex,
+                KeyConditionExpression: '#year = :year AND #month = :month',
+                FilterExpression: '#local = :local AND #room = :room',
+                ExpressionAttributeNames: {
+                    '#year': 'year',
+                    '#month': 'month',
+                    '#local': 'local',
+                    '#room': 'room',
+                },
+                ExpressionAttributeValues: {
+                    ':year': data.year,
+                    ':month': data.month,
+                    ':local': data.local,
+                    ':room': data.room,
+                },
+            }),
+        );
+
+        if (result.Items && result.Items.length > 0) {
+            throw new AppError(400, 'A measurement with the same year, month, local, and room already exists.');
+        }
+
         await this.db.send(new PutCommand({ TableName: tableName, Item: data }));
     }
 

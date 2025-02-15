@@ -12,5 +12,5 @@ import { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2 } from 'aws-l
 import { controller } from '../di/injection';
 
 export const lambdaHandler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> => {
-    return await controller.delete(event);
+    return await controller.delete(event.pathParameters?.id);
 };
