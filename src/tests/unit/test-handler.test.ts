@@ -151,7 +151,7 @@ describe('Unit test for app handler', function () {
     it('should handle PUT /measure/{id} and return 200', async () => {
         const id = uuid();
         ddbMock.on(QueryCommand).resolves({
-            Items: [{ id: id, local: 'Home', year: 2023, month: 1, room: 'Living Room', meter: 100 }],
+            Items: [],
         });
 
         const event: APIGatewayProxyEventV2 = {
@@ -161,7 +161,7 @@ describe('Unit test for app handler', function () {
             rawQueryString: '',
             pathParameters: { id: id },
             headers: {},
-            body: JSON.stringify({ local: 'Home', year: 2023, month: 1, room: 'Living Room', meter: 150 }),
+            body: JSON.stringify({ local: 'Home', year: 2024, month: 2, room: '101', meter: 150 }),
             requestContext: {
                 accountId: '123456789012',
                 apiId: '1234',
@@ -184,7 +184,6 @@ describe('Unit test for app handler', function () {
         };
 
         const result = await updateMeasure(event);
-
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual(JSON.stringify({ message: 'Updated' }));
     });

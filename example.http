@@ -1,0 +1,32 @@
+DELETE https://7gg7ughwve.execute-api.us-east-1.amazonaws.com/Prod/measure/1b48568c-00a0-46db-8d72-34966563a46a
+
+
+###
+GET https://7gg7ughwve.execute-api.us-east-1.amazonaws.com/Prod/measure/1b48568c-00a0-46db-8d72-34966563a46a
+
+###
+POST https://7gg7ughwve.execute-api.us-east-1.amazonaws.com/Prod/measure
+
+{
+    "id": "5a639678-5de4-4e2d-b1c7-0634dbf5d56f",
+    "room": "104",
+    "meter": 300.8,
+    "year": 2024,
+    "month": 1,
+    "local": "HUAROCHIRI"
+}
+
+###
+
+PUT https://7gg7ughwve.execute-api.us-east-1.amazonaws.com/Prod/measure/d1b2f3e4-5678-4a3b-8c9d-0e1f2a3b4c5d
+
+{
+    "room": "104",
+    "meter": 600.8,
+    "year": 2024,
+    "month": 1,
+    "local": "HUAROCHIRI"
+}
+
+###
+GET https://7gg7ughwve.execute-api.us-east-1.amazonaws.com/Prod/measure/search?local=HUAROCHIRI&year=2024&month=1

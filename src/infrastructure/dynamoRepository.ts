@@ -25,7 +25,7 @@ export class DynamoRepository implements LightMeasurementRepository {
                 TableName: tableName,
                 IndexName: yearMonthIndex,
                 KeyConditionExpression: '#year = :year AND #month = :month',
-                FilterExpression: '#local = :local AND #room = :room AND id <> :id',
+                FilterExpression: '#local = :local AND #room = :room AND #id <> :id',
                 ExpressionAttributeNames: {
                     '#year': 'year',
                     '#month': 'month',
