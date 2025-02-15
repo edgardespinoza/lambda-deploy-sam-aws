@@ -25,7 +25,13 @@ export class DynamoRepository implements LightMeasurementRepository {
             TableName: tableName,
             Key: { id: measurement.id },
             UpdateExpression: 'SET #month = :month, #year = :year, #room = :room, #meter = :meter, #local = :local',
-
+            ExpressionAttributeNames: {
+                '#month': 'month',
+                '#year': 'year',
+                '#room': 'room',
+                '#meter': 'meter',
+                '#local': 'local',
+            },
             ExpressionAttributeValues: {
                 ':month': measurement.month,
                 ':year': measurement.year,
