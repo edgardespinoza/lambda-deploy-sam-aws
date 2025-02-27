@@ -1,11 +1,15 @@
 import { z } from 'zod';
 
-export const schema = z.object({
+export const registerSchema = z.object({
     id: z.string().uuid(),
     month: z.number().min(1).max(12),
     year: z.number().min(2000).max(2100),
     room: z.string().min(1),
-    meter: z.number().min(0),
+    meterWaterCurrent: z.number().min(0),
+    meterWaterBefore: z.number().min(0),
+    meterLightCurrent: z.number().min(0),
+    meterLightBefore: z.number().min(0),
+    rent: z.number().min(0),
     local: z.string().min(1),
 });
 
@@ -13,7 +17,11 @@ export const schemaUpdate = z.object({
     month: z.number().min(1).max(12),
     year: z.number().min(2000).max(2100),
     room: z.string().min(1),
-    meter: z.number().min(0),
+    meterWaterCurrent: z.number().min(0),
+    meterWaterBefore: z.number().min(0),
+    meterLightCurrent: z.number().min(0),
+    meterLightBefore: z.number().min(0),
+    rent: z.number().min(0),
     local: z.string().min(1),
 });
 

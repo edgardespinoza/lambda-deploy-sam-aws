@@ -3,7 +3,7 @@ import { errorHandler } from '../errors/handlerErrors';
 import { LightMeasurement } from '../models/lightMeasurement';
 import { LightMeasurementService } from '../models/service';
 import { Result } from './result';
-import { querySchema, schema, schemaUpdate } from './schema';
+import { querySchema, registerSchema, schemaUpdate } from './schema';
 
 export class LightMeasurementController {
     constructor(private service: LightMeasurementService) {}
@@ -39,9 +39,21 @@ export class LightMeasurementController {
     async create(body?: string): Promise<Result> {
         try {
             const data = JSON.parse(body ?? '{}');
-            schema.parse(data);
+            registerSchema.parse(data);
 
-            const measurement = new LightMeasurement(data.id, data.month, data.year, data.room, data.meter, data.local);
+            const measurement = new LightMeasurement(
+                data.id,
+                data.month,
+                data.year,
+                data.room,
+                data.meterWaterCurrent,
+                data.meterWaterBefore,
+                data.meterLightCurrent,
+                data.meterLightBefore,
+                data.rent,
+                data.local,
+            );
+
             await this.service.create(measurement);
 
             return { statusCode: 201, body: JSON.stringify({ message: 'Created' }) };
@@ -69,7 +81,18 @@ export class LightMeasurementController {
             const data = JSON.parse(body ?? '{}');
             schemaUpdate.parse(data);
 
-            const measurement = new LightMeasurement(id, data.month, data.year, data.room, data.meter, data.local);
+            const measurement = new LightMeasurement(
+                id,
+                data.month,
+                data.year,
+                data.room,
+                data.meterWaterCurrent,
+                data.meterWaterBefore,
+                data.meterLightCurrent,
+                data.meterLightBefore,
+                data.rent,
+                data.local,
+            );
             await this.service.update(measurement);
 
             return { statusCode: 200, body: JSON.stringify({ message: 'Updated' }) };

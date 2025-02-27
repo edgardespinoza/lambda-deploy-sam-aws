@@ -4,7 +4,11 @@ export class LightMeasurement {
         public month: number,
         public year: number,
         public room: string,
-        public meter: number,
+        public meterWaterCurrent: number,
+        public meterWaterBefore: number,
+        public meterLightCurrent: number,
+        public meterLightBefore: number,
+        public rent: number,
         public local: string,
     ) {}
 }
