@@ -74,7 +74,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref LightMeasurementApi
-            Path: /measure/{id}
+            Path: /measure
             Method: options
             Auth:
               ApiKeyRequired: false
@@ -232,7 +232,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref LightMeasurementApi
-            Path: /measure/{id}
+            Path: /measure/search
             Method: options
             Auth:
               ApiKeyRequired: false
