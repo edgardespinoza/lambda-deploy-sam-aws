@@ -70,12 +70,6 @@ Resources:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure
             Method: POST
-        Options:
-          Type: Api
-          Properties:
-            RestApiId: !Ref LightMeasurementApi
-            Path: /measure
-            Method: OPTIONS
 
     Metadata:
       BuildMethod: esbuild
@@ -108,12 +102,6 @@ Resources:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
             Method: GET
-        Options:
-          Type: Api
-          Properties:
-            RestApiId: !Ref LightMeasurementApi
-            Path: /measure/{id}
-            Method: OPTIONS
 
     Metadata:
       BuildMethod: esbuild
@@ -147,12 +135,6 @@ Resources:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
             Method: PUT
-        Options:
-          Type: Api
-          Properties:
-            RestApiId: !Ref LightMeasurementApi
-            Path: /measure/{id}
-            Method: OPTIONS
 
     Metadata:
       BuildMethod: esbuild
@@ -186,12 +168,6 @@ Resources:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
             Method: DELETE
-        Options:
-          Type: Api
-          Properties:
-            RestApiId: !Ref LightMeasurementApi
-            Path: /measure/{id}
-            Method: OPTIONS
 
     Metadata:
       BuildMethod: esbuild
@@ -225,12 +201,6 @@ Resources:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/search
             Method: GET
-        Options:
-          Type: Api
-          Properties:
-            RestApiId: !Ref LightMeasurementApi
-            Path: /measure/search
-            Method: OPTIONS
 
     Metadata:
       BuildMethod: esbuild
