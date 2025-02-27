@@ -36,6 +36,17 @@ Resources:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
+  LightMeasurementApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowOrigin: "'http://localhost:5173'"
+        MaxAge: "'600'"
+        AllowCredentials: true
+
   CreateMeasurementFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -56,8 +67,10 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref LightMeasurementApi
             Path: /measure
             Method: POST
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -87,8 +100,10 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
             Method: GET
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -118,8 +133,10 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
             Method: PUT
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -149,8 +166,10 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
             Method: DELETE
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
