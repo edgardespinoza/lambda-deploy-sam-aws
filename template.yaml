@@ -75,9 +75,8 @@ Resources:
           Properties:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure
-            Method: options
-            Auth:
-              ApiKeyRequired: false
+            Method: OPTIONS
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -114,9 +113,8 @@ Resources:
           Properties:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
-            Method: options
-            Auth:
-              ApiKeyRequired: false
+            Method: OPTIONS
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -154,9 +152,8 @@ Resources:
           Properties:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
-            Method: options
-            Auth:
-              ApiKeyRequired: false
+            Method: OPTIONS
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -194,9 +191,8 @@ Resources:
           Properties:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/{id}
-            Method: options
-            Auth:
-              ApiKeyRequired: false
+            Method: OPTIONS
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -226,6 +222,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref LightMeasurementApi
             Path: /measure/search
             Method: GET
         Options:
@@ -233,9 +230,8 @@ Resources:
           Properties:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/search
-            Method: options
-            Auth:
-              ApiKeyRequired: false
+            Method: OPTIONS
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
