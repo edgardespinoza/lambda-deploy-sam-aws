@@ -214,4 +214,4 @@ Resources:
 Outputs:
   LightMeasurementApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/measure/"
+    Value: !Sub "https://${LightMeasurementApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/measure/"
