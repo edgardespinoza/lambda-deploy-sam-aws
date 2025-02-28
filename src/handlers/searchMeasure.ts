@@ -12,9 +12,18 @@ import { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2 } from 'aws-l
 import { controller } from '../di/injection';
 
 export const lambdaHandler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> => {
-    return await controller.getMeasureByLocalYearMonth(
+    const response = await controller.getMeasureByLocalYearMonth(
         event.queryStringParameters?.local,
         event.queryStringParameters?.year,
         event.queryStringParameters?.month,
     );
+
+    return {
+        ...response,
+        headers: {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+        },
+    };
 };
