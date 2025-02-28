@@ -13,7 +13,7 @@ Globals:
 Parameters:
   AllowedOrigin:
     Type: String
-    Default: "'http://react-native-light.s3-website-us-east-1.amazonaws.com'"
+    Default: "http://react-native-light.s3-website-us-east-1.amazonaws.com"
 
 Resources:
   LightMeasurementsTable:
