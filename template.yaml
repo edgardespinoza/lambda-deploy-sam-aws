@@ -201,12 +201,6 @@ Resources:
             RestApiId: !Ref LightMeasurementApi
             Path: /measure/search
             Method: GET
-        Preflight:
-          Type: Api
-          Properties:
-            RestApiId: !Ref LightMeasurementApi
-            Path: /measure/search
-            Method: OPTIONS
     Metadata:
       BuildMethod: esbuild
       BuildProperties:

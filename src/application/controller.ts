@@ -19,11 +19,6 @@ export class LightMeasurementController {
             const data = await this.service.getMeasureByLocalYearMonth(local, year, month);
             return {
                 statusCode: 200,
-                headers: {
-                    'Access-Control-Allow-Headers': 'Content-Type',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-                },
                 body: JSON.stringify(data),
             };
         } catch (error: unknown) {
