@@ -18,8 +18,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEventV2): Promise<APIG
         ...response,
         headers: {
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Origin': `${process.env.DNS_CLIENT}`,
-            'Access-Control-Allow-Methods': 'OPTIONS,POST',
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Credentials': true,
         },
     };
