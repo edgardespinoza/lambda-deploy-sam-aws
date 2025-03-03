@@ -10,6 +10,11 @@ Globals:
   Function:
     Timeout: 3
 
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+
 Resources:
   LightMeasurementsTable:
     Type: AWS::DynamoDB::Table
@@ -39,7 +44,7 @@ Resources:
   LightMeasurementApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Prod
+      StageName: !Ref Stage
       Cors:
         AllowMethods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
         AllowHeaders: "'Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers'"
@@ -213,4 +218,19 @@ Resources:
 Outputs:
   LightMeasurementApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${LightMeasurementApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/measure/"
+    Value: !Sub "https://${LightMeasurementApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/measure/"
+  CreateMeasurementFunction:
+    Description: "CreateMeasurementFunction ARN"
+    Value: !GetAtt CreateMeasurementFunction.Arn
+  GetMeasurementFunction:
+    Description: "GetMeasurementFunction ARN"
+    Value: !GetAtt GetMeasurementFunction.Arn
+  UpdateMeasurementFunction:
+    Description: "UpdateMeasurementFunction ARN"
+    Value: !GetAtt UpdateMeasurementFunction.Arn
+  DeleteMeasurementFunction:
+    Description: "DeleteMeasurementFunction ARN"
+    Value: !GetAtt DeleteMeasurementFunction.Arn
+  SearchMeasurementFunction:
+    Description: "SearchMeasurementFunction ARN"
+    Value: !GetAtt SearchMeasurementFunction.Arn
